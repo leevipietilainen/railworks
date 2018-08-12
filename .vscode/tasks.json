@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build backend",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -10,6 +10,27 @@
                 "${workspaceFolder}/Backend/Backend.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build tsc",
+            "type": "typescript",
+            "tsconfig": "Frontend\\tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "build jsx",
+            "command": "node",
+            "type": "process",
+            "args": [
+                "${workspaceFolder}\\Frontend\\node_modules\\babel-cli\\bin\\babel.js",
+                "${workspaceFolder}\\Frontend\\src",
+                "--presets",
+                "react-app/prod",
+                "--out-dir",
+                "${workspaceFolder}\\Frontend\\out"
+            ]
         }
     ]
 }

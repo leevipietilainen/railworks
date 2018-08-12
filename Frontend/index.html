@@ -3,21 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello World</title>
-    <script src="lib/react.development.js"></script>
-    <script src="lib/react-dom.development.js"></script>
+    <script src="lib/require.js"></script>
+    <!--<script src="lib/react.development.js"></script>
+    <script src="lib/react-dom.development.js"></script>-->
     
     <!-- Don't use this in production: -->
-    <script src="lib/babel.min.js"></script>
+    <!--<script src="lib/babel.min.js"></script>
+    <script type="text/babel" src="src/Start.jsx"></script>-->
   </head>
   <body>
     <div id="root"></div>
-    <script type="text/babel">
-
-      ReactDOM.render(
-        <h1>Hello, world!</h1>,
-        document.getElementById('root')
-      );
-
+    <script>
+      // contents of main.js:
+      require.config({
+          paths: {
+              react: 'lib/react.development',
+              'react-dom': 'lib/react-dom.development'
+          }
+      });
+      require(['src/src/start.js'], function (foo) {
+        //foo is now loaded.
+      });
     </script>
     <!--
       Note: this page is a great way to try React but it's not suitable for production.

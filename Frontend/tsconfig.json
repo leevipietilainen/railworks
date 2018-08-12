@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noEmitOnError": true,
+        "sourceMap": true,
+        "target": "es5",
+        "baseUrl" : "./types",
+        "paths": {
+            "csstype": [ "csstype/index" ],
+            "react": [ "react/index" ],
+            "react-dom": [ "react-dom/index" ],
+            "prop-types": [ "prop-types/index" ]
+        },
+        "jsx": "preserve",
+        "module": "AMD"
+    },
+    "files": [
+        "./src/HelloWorld.tsx",
+        "./src/Start.tsx"
+    ],
+    "compileOnSave": true
+  }
