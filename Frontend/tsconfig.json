@@ -12,7 +12,8 @@
             "prop-types": [ "prop-types/index" ]
         },
         "jsx": "preserve",
-        "module": "AMD"
+        "module": "AMD",
+        "outDir": "./out"
     },
     "files": [
         "./src/HelloWorld.tsx",

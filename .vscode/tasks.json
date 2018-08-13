@@ -2,6 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build",
+            "dependsOn":[
+                "build backend",
+                "build jsx"
+            ]
+        },
+        {
             "label": "build backend",
             "command": "dotnet",
             "type": "process",
@@ -25,11 +32,16 @@
             "type": "process",
             "args": [
                 "${workspaceFolder}\\Frontend\\node_modules\\babel-cli\\bin\\babel.js",
-                "${workspaceFolder}\\Frontend\\src",
+                "${workspaceFolder}\\Frontend\\out",
                 "--presets",
                 "react-app/prod",
                 "--out-dir",
-                "${workspaceFolder}\\Frontend\\out"
+                "${workspaceFolder}\\Frontend\\out",
+                "-x",
+                ".jsx"
+            ],
+            "dependsOn":[
+                "build tsc"
             ]
         }
     ]
