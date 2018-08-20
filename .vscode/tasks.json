@@ -19,6 +19,16 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build common",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Common/Common.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build tsc",
             "type": "typescript",
             "tsconfig": "Frontend\\tsconfig.json",
