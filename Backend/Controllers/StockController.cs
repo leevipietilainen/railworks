@@ -17,7 +17,10 @@ namespace Backend.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             StockDataHandler handler = new StockDataHandler();
+            handler.UpsertStockData("MSFT");
             StockSymbol symbol = handler.GetStockData("MSFT");
+            if(symbol == null)
+                return new string[] { "null", "value2" };
             return new string[] { symbol.Symbol, "value2" };
         }
 

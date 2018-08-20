@@ -31,5 +31,17 @@ namespace RailWorks.Common.Repository
 
             return item;
         }
+
+        public void AddStock(StockSymbol Symbol)
+        {
+            BsonDocument document = new BsonDocument()
+            {
+                { "Symbol", Symbol.Symbol },
+                { "Added", DateTime.UtcNow }
+            };
+
+            IMongoCollection<BsonDocument> collection = _database.GetCollection<BsonDocument>(_stockCollectionName);
+            collection.InsertOne(document);
+        }
     }
 }
