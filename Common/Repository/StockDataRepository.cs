@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
 using RailWorks.Common.Models;
 
 namespace RailWorks.Common.Repository
@@ -13,36 +15,24 @@ namespace RailWorks.Common.Repository
 
         public StockDataRepository(MongoClient Client, String DatabaseName = "RailWorks")
         {
+            BsonClassMap.RegisterClassMap<StockSymbol>();
             _database = Client.GetDatabase(DatabaseName);
         }
 
-        public StockSymbol GetStockSymbolData(FilterDefinition<BsonDocument> Filter)
+        public StockSymbol GetStockSymbolData(FilterDefinition<StockSymbol> Filter)
         {
-            IMongoCollection<BsonDocument> collection = _database.GetCollection<BsonDocument>(_stockCollectionName);
+            IMongoCollection<StockSymbol> collection = _database.GetCollection<StockSymbol>(_stockCollectionName);
 
-            BsonDocument result = collection.Find(Filter).FirstOrDefault();
-            if(result == null)
-                return null;
-
-            StockSymbol item = new StockSymbol()
-            {
-                Symbol = result.GetValue("Symbol").AsString,
-                Added = result.GetValue("Added").ToUniversalTime()
-            };
-
-            return item;
+            StockSymbol result = collection.Find(Filter).FirstOrDefault();
+            return result;
         }
 
         public void AddStock(StockSymbol Symbol)
         {
-            BsonDocument document = new BsonDocument()
-            {
-                { "Symbol", Symbol.Symbol },
-                { "Added", DateTime.UtcNow }
-            };
+            Symbol.Added = DateTime.UtcNow;
 
-            IMongoCollection<BsonDocument> collection = _database.GetCollection<BsonDocument>(_stockCollectionName);
-            collection.InsertOne(document);
+            IMongoCollection<StockSymbol> collection = _database.GetCollection<StockSymbol>(_stockCollectionName);
+            collection.InsertOne(Symbol);
         }
     }
 }
