@@ -28,12 +28,13 @@ namespace RailWorks.Common
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
                 .AddUserSecrets("a59f52bb-3247-491a-8050-1d79aee5b6a6");
             _config = builder.Build();
 
             if(_client == null) {
                 RegisterMappings();
-                _client = new MongoClient("mongodb://localhost:27017");
+                _client = new MongoClient(_config["ConnectionString"]);
             }
         }
 

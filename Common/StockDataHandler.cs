@@ -34,9 +34,10 @@ namespace RailWorks.Common
 
         public void UpsertStockData(String Symbol)
         {
-            if(GetStockData(Symbol) == null)
+            StockSymbol symbol = GetStockData(Symbol);
+            if(symbol == null)
             {
-                StockSymbol symbol = new StockSymbol()
+                symbol = new StockSymbol()
                 {
                     Symbol = Symbol
                 };
