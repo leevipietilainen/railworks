@@ -26,7 +26,8 @@ namespace RailWorks.Common.Repository
 
             StockSymbol item = new StockSymbol()
             {
-                Symbol = result.GetValue("Symbol").AsString
+                Symbol = result.GetValue("Symbol").AsString,
+                Added = result.GetValue("Added").ToUniversalTime()
             };
 
             return item;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RailWorks.Common;
 using RailWorks.Common.Models;
+using Newtonsoft.Json;
 
 namespace Backend.Controllers
 {
@@ -12,34 +13,36 @@ namespace Backend.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        // GET api/values
+        // GET api/stock
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             StockDataHandler handler = new StockDataHandler();
-            handler.UpsertStockData("MSFT");
+            //handler.UpsertStockData("MSFT");
             StockSymbol symbol = handler.GetStockData("MSFT");
             if(symbol == null)
                 return new string[] { "null", "value2" };
             return new string[] { symbol.Symbol, "value2" };
         }
 
-        // GET api/values/5
+        // GET api/stock/MSFT
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> Get(string id)
         {
-            return "value";
+            StockDataHandler handler = new StockDataHandler();
+            StockSymbol symbol = handler.GetStockData(id);
+            return JsonConvert.SerializeObject(symbol);
         }
 
-        // POST api/values
+        // POST api/stock
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/stock/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(string id, [FromBody] string value)
         {
         }
     }
