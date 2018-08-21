@@ -11,14 +11,14 @@ namespace RailWorks.Common
     public class StockDataHandler
     {
         private readonly ConfigHandler _config = null;
-        private MongoClient _client = null;
+        //private readonly MongoClient _client = null;
         private IStockDataRepository _repository = null;
 
         public StockDataHandler()
         {
             _config = new ConfigHandler();
-            _client = new MongoClient("mongodb://localhost:27017");
-            _repository = new StockDataRepository(_client);
+            //_client = _config.Client;
+            _repository = new StockDataRepository(_config.Client);
         }
 
         public StockDataHandler(IStockDataRepository Repository)

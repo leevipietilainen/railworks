@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
 using RailWorks.Common.Models;
 
 namespace RailWorks.Common.Repository
@@ -15,7 +13,6 @@ namespace RailWorks.Common.Repository
 
         public StockDataRepository(MongoClient Client, String DatabaseName = "RailWorks")
         {
-            BsonClassMap.RegisterClassMap<StockSymbol>();
             _database = Client.GetDatabase(DatabaseName);
         }
 
