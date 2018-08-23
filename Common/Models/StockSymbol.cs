@@ -8,6 +8,7 @@ namespace RailWorks.Common.Models
         public String Id { get; set; }
         public String Symbol { get; set; }
         public DateTime Added { get; set; }
+        public DateTime? LastRefresh { get; set; }
         public List<StockValue> Values { get; set; }
     }
 }

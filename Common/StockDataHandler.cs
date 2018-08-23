@@ -5,6 +5,7 @@ using RailWorks.Common.Repository;
 using RailWorks.Common.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using System.Threading.Tasks;
 
 namespace RailWorks.Common
 {
@@ -32,7 +33,7 @@ namespace RailWorks.Common
             return _repository.GetStockSymbolData(filter);
         }
 
-        public void UpsertStockData(String Symbol)
+        public async Task<StockSymbol> UpsertStockDataAsync(String Symbol)
         {
             StockSymbol symbol = GetStockData(Symbol);
             if(symbol == null)
@@ -43,6 +44,8 @@ namespace RailWorks.Common
                 };
                 _repository.AddStock(symbol);
             }
+            StockDataUpdater updater = new StockDataUpdater();
+            return await updater.UpdateStockSymbolDataAsync(symbol);
         }
     }
 }

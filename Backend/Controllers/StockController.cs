@@ -40,10 +40,13 @@ namespace Backend.Controllers
         {
         }
 
-        // PUT api/stock/5
+        // PUT api/stock/MSFT
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] string value)
+        public async Task<ActionResult<string>> Put(string id, [FromBody] string value)
         {
+            StockDataHandler handler = new StockDataHandler();
+            StockSymbol data = await handler.UpsertStockDataAsync(id);
+            return JsonConvert.SerializeObject(data);
         }
     }
 }
