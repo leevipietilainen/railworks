@@ -44,8 +44,10 @@ namespace RailWorks.Common
                 };
                 _repository.AddStock(symbol);
             }
-            StockDataUpdater updater = new StockDataUpdater();
-            return await updater.UpdateStockSymbolDataAsync(symbol);
+            StockDataUpdater updater = new StockDataUpdater(_repository);
+            symbol = await updater.UpdateStockSymbolDataAsync(symbol);
+            await _repository.UpdateStockAsync(symbol);
+            return symbol;
         }
     }
 }

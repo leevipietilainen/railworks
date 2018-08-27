@@ -44,6 +44,7 @@ namespace RailWorks.Common
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
             });
+            BsonClassMap.RegisterClassMap<StockValue>();
         }
     }
 }

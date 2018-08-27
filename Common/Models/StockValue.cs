@@ -10,5 +10,6 @@ namespace RailWorks.Common.Models
         public Decimal Low { get; set; }
         public Decimal Close { get; set; }
         public Decimal Volume { get; set; }
+        public String ParentId { get; set; }
     }
 }

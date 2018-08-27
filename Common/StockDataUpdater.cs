@@ -1,21 +1,23 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using RailWorks.Common.Repository;
 using RailWorks.Common.Models;
 using AlphaVantage.Net.Core;
 using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 namespace RailWorks.Common
 {
     class StockDataUpdater
     {
         private readonly ConfigHandler _config = null;
+        private readonly IStockDataRepository _repository = null;
 
-        public StockDataUpdater()
+        public StockDataUpdater(IStockDataRepository Repository)
         {
             _config = new ConfigHandler();
+            _repository = Repository;
         }
 
         public void UpdateStockSymbolData(StockSymbol Symbol)
@@ -57,6 +59,7 @@ namespace RailWorks.Common
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
 
             Symbol.Values = new List<StockValue>();
+            List<Task> waitingTasks = new List<Task>();
             foreach (JObject timeSerie in result["Time Series (5min)"].Values())
             {
                 JProperty prop = (JProperty)timeSerie.Parent;
@@ -74,11 +77,21 @@ namespace RailWorks.Common
                     High = Decimal.Parse(timeSerie.Value<string>("2. high")),
                     Low = Decimal.Parse(timeSerie.Value<string>("3. low")),
                     Close = Decimal.Parse(timeSerie.Value<string>("4. close")),
-                    Volume = Decimal.Parse(timeSerie.Value<string>("5. volume"))
+                    Volume = Decimal.Parse(timeSerie.Value<string>("5. volume")),
+                    ParentId = Symbol.Id
                 };
 
                 Symbol.Values.Add(value);
+                
+                waitingTasks.Add(_repository.AddStockSymbolDataAsync(value));
+                if(waitingTasks.Count > 4)
+                {
+                    int i = Task.WaitAny(waitingTasks.ToArray());
+                    waitingTasks.RemoveAt(i);
+                }
             }
+            Task.WaitAll(waitingTasks.ToArray());
+            waitingTasks.Clear();
 
             DateTime localRefresh = DateTime.ParseExact((string)result["Meta Data"]["3. Last Refreshed"], "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             Symbol.LastRefresh = TimeZoneInfo.ConvertTimeToUtc(localRefresh, timeZone);
