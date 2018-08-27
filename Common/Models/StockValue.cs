@@ -4,6 +4,7 @@ namespace RailWorks.Common.Models
 {
     public class StockValue
     {
+        public String Id { get; set; }
         public DateTime TimeStamp { get; set; }
         public Decimal Open { get; set; }
         public Decimal High { get; set; }

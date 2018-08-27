@@ -27,10 +27,10 @@ namespace Backend.Controllers
 
         // GET api/stock/MSFT
         [HttpGet("{id}")]
-        public ActionResult<string> Get(string id)
+        public async Task<ActionResult<string>> Get(string id)
         {
             StockDataHandler handler = new StockDataHandler();
-            StockSymbol symbol = handler.GetStockData(id);
+            StockSymbol symbol = await handler.GetStockDataAsync(id, new TimeSpan(7, 0, 0, 0));
             return JsonConvert.SerializeObject(symbol);
         }
 

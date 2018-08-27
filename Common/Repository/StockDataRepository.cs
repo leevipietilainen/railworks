@@ -18,7 +18,7 @@ namespace RailWorks.Common.Repository
             _database = Client.GetDatabase(DatabaseName);
         }
 
-        public StockSymbol GetStockSymbolData(FilterDefinition<StockSymbol> Filter)
+        public StockSymbol GetStock(FilterDefinition<StockSymbol> Filter)
         {
             IMongoCollection<StockSymbol> collection = _database.GetCollection<StockSymbol>(_stockCollectionName);
 
@@ -36,10 +36,28 @@ namespace RailWorks.Common.Repository
 
         public Task UpdateStockAsync(StockSymbol Symbol)
         {
-            FilterDefinition<StockSymbol> filter = Builders<StockSymbol>.Filter.Eq("Symbol", Symbol);
+            FilterDefinition<StockSymbol> filter = Builders<StockSymbol>.Filter.Eq("Symbol", Symbol.Symbol);
             IMongoCollection<StockSymbol> collection = _database.GetCollection<StockSymbol>(_stockCollectionName);
 
             return collection.ReplaceOneAsync(filter, Symbol);
+        }
+
+        public async Task<StockSymbol> GetStockSymbolDataAsync(FilterDefinition<StockSymbol> Filter, FilterDefinition<StockValue> DataFilter)
+        {
+            IMongoCollection<StockSymbol> collection = _database.GetCollection<StockSymbol>(_stockCollectionName);
+
+            StockSymbol symbol = await collection.Find(Filter).FirstOrDefaultAsync();
+            if(symbol != default(StockSymbol))
+            {
+                IMongoCollection<StockValue> dataCollection = _database.GetCollection<StockValue>(_stockDataCollectionName);
+                FilterDefinition<StockValue> dataFilter = 
+                    (
+                        Builders<StockValue>.Filter.Eq("ParentId", symbol.Id) & 
+                        DataFilter
+                    );
+                symbol.Values = await dataCollection.Find(dataFilter).ToListAsync();
+            }
+            return symbol;
         }
 
         public Task AddStockSymbolDataAsync(StockValue DataPoint)

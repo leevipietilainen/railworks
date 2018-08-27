@@ -8,10 +8,11 @@ namespace RailWorks.Common.Repository
 {
     public interface IStockDataRepository
     {
-        StockSymbol GetStockSymbolData(FilterDefinition<StockSymbol> Filter);
+        StockSymbol GetStock(FilterDefinition<StockSymbol> Filter);
 
         void AddStock(StockSymbol Symbol);
         Task UpdateStockAsync(StockSymbol Symbol);
+        Task<StockSymbol> GetStockSymbolDataAsync(FilterDefinition<StockSymbol> Filter, FilterDefinition<StockValue> DataFilter);
         Task AddStockSymbolDataAsync(StockValue DataPoint);
     }
 }

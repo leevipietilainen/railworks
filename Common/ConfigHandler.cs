@@ -42,9 +42,13 @@ namespace RailWorks.Common
         {
             BsonClassMap.RegisterClassMap<StockSymbol>(cm => {
                 cm.AutoMap();
+                cm.UnmapMember(c => c.Values);
                 cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
             });
-            BsonClassMap.RegisterClassMap<StockValue>();
+            BsonClassMap.RegisterClassMap<StockValue>(cm => {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
         }
     }
 }

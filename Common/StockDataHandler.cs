@@ -30,7 +30,15 @@ namespace RailWorks.Common
         public StockSymbol GetStockData(String Symbol)
         {
             FilterDefinition<StockSymbol> filter = Builders<StockSymbol>.Filter.Eq("Symbol", Symbol);
-            return _repository.GetStockSymbolData(filter);
+            return _repository.GetStock(filter);
+        }
+
+        public Task<StockSymbol> GetStockDataAsync(String Symbol, TimeSpan history)
+        {
+            DateTime cutoff = DateTime.UtcNow - history;
+            FilterDefinition<StockSymbol> filter = Builders<StockSymbol>.Filter.Eq("Symbol", Symbol);
+            FilterDefinition<StockValue> dataFilter = Builders<StockValue>.Filter.Gte("TimeStamp", cutoff);
+            return _repository.GetStockSymbolDataAsync(filter, dataFilter);
         }
 
         public async Task<StockSymbol> UpsertStockDataAsync(String Symbol)
