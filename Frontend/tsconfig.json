@@ -9,13 +9,16 @@
             "csstype": [ "csstype/index" ],
             "react": [ "react/index" ],
             "react-dom": [ "react-dom/index" ],
-            "prop-types": [ "prop-types/index" ]
+            "prop-types": [ "prop-types/index" ],
+            "models": [ "../src/models" ]
         },
         "jsx": "preserve",
         "module": "AMD",
         "outDir": "./out"
     },
     "files": [
+        "./src/Models.ts",
+        "./src/StockData.tsx",
         "./src/HelloWorld.tsx",
         "./src/Start.tsx"
     ],
